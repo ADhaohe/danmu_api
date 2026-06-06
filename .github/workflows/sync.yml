@@ -9,10 +9,12 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      - name: Sync upstream changes
-        uses: wei/pull@v3
-        with:
-          upstream_repository: 原作者用户名/danmu_api # 【需要修改】改成原作者的名字和仓库名
-          upstream_branch: main                  # 【需要修改】原仓库的主分支名（通常是 main 或 master）
-          target_branch: main                    # 【需要修改】你自己的主分支名
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Checkout target repo
+        uses: actions/checkout@v4
+
+      - name: Sync Upstream
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # 这一行使用 GitHub 官方命令行工具直接同步，把里面的 main 改成你和原作者的分支名即可
+          gh repo sync ${{ github.repository }} -b main
